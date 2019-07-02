@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Faster+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Oswald:400,500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+        <title>Form creator</title>
+        <style>
+            /*To style the select tag for creating questions */
+            .box {
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                height: 40px;
+                transform: translate(-50%, -50%);
+            }
+
+            .box select {
+                background-color: #008067;
+                color: white;
+                padding: 12px;
+                width: 250px;
+                border: none;
+                font-size: 12px;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+                -webkit-appearance: button;
+                appearance: button;
+                outline: none;
+            }
+
+            .box::before {
+                content: "\f13a";
+                font-family: FontAwesome;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 20%;
+                height: 100%;
+                text-align: center;
+                font-size: 12px;
+                line-height: 45px;
+                color: rgba(255, 255, 255, 0.5);
+                background-color: rgba(255, 255, 255, 0.1);
+                pointer-events: none;
+            }
+
+            .box:hover::before {
+                color: rgba(255, 255, 255, 0.6);
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .box select option {
+                padding: 30px;
+            }
+
+            /* Assign grid for the backgorund and navbar*/
+            input{
+                border:none;
+                background:white;
+                width:100%;
+                margin:0;
+                font-size: 1.4em;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 200px 1fr;
+                grid-template-areas:
+                    "header"
+                    "main";
+                height: 100vh;
+            }
+
+            .header{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 16px;
+                background-color: #008067;
+            }
+
+            /* Give every child element its grid name */
+            .header {
+                grid-area: header;
+                background-color: #008067;
+            }
+
+            .main {
+                grid-area: main;
+                background-color: white;
+            }
+
+            body {font-family: 'Russo One', sans-serif;}
+            * {box-sizing: border-box;}
+
+            /* Button used to open the contact form - fixed at the bottom of the page */
+            .open-button {
+                background-color: #555;
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                opacity: 0.8;
+                position: fixed;
+                bottom: 23px;
+                right: 28px;
+                width: 280px;
+            }
+
+            .form-popup {
+                display: none;
+                position: fixed;
+                bottom: 0;
+                right: 15px;
+                border: 3px solid #f1f1f1;
+                z-index: 9;
+            }
+
+            .form-container {
+                padding: 10px;
+                background-color: white;
+            }
+
+            .form-container input[type=text] {
+                width: 100%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                border: none;
+                background: #f1f1f1;
+            }
+
+            input[type=text]:focus {
+                background-color: #ddd;
+                border: 2px solid #008067; 
+                width: 100%;
+                outline: none;
+            }
+
+
+            .form-container .btn {
+                background-color: #4CAF50;
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom:10px;
+                opacity: 0.8;
+            }
+
+            .form-container .btn-cancel {
+                background-color: red;
+            }
+
+            .form-container .btn:hover, .open-button:hover {
+                opacity: 1;
+            }
+
+            .created-form{
+                position: absolute;
+                top: 15%;
+                left: 30%;
+                width: 45%;
+
+                padding: 1em;
+                border: 1px solid #CCC;
+                background: white;
+            }
+
+            .questions {
+                margin: 0 auto;
+                width: 95%;
+                padding: 1em;
+                border: 2px solid black;
+                background: #ffffff;
+            }
+            
+            .share-popup {
+                margin-top: 0%;
+                margin-left: 80%;
+                width: 20%;
+                padding: 1em;
+                display: none;
+                border: 1px solid #CCC;
+                border-block-color: black;
+                background: white;
+
+            }
+            
+            button {
+                padding: 10px;
+                color: #009578;
+                font-weight: bold;
+                background: white;
+                width: 100%;
+                border: none;
+                outline: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button[type=submit]{
+                padding: 10px;
+                color: white;
+                font-weight: bold;
+                background: #009578;
+                width: 100%;
+                border: none;
+                outline: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            input[type=submit] {
+                padding: 10px;
+                color: white;
+                font-weight: bold;
+                background: #009578;
+                width: 100%;
+                border: none;
+                outline: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:active {
+                background: #008067;
+            }
+            .share-top{
+                height: 5%;
+                background-color: #008067;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="grid-container">
+                <header class="header">
+                    <div class="header__goback"><a href="/dashboard"><button>Go back</button></a></div>
+                    <div class="header__end">
+                        <a href="/form/<%= form._id %>/useresponse"><button>View Responses</button></a>
+                        <br>
+                        <a><button onclick="openShare()">Send</button></a>
+                    </div>
+                </header>
+
+                <main class="main" style="font-family:'Russo One', sans-serif;">
+                    <div class="created-form">
+                        <form action="/form/<%= form._id %>/edit/save" method="POST" id="form-save">
+                                                <p style="font-family: 'Russo One', sans-serif;">Questions</p>    
+                            <input type="text" name="title" value="<%= form.title %>" form="form-save" ><br>
+                            <input type="text" name="desc" value="<%= form.desc %>" form="form-save" ><br>
+                            <br>
+                        <% form.questions.forEach(function(qns) { %>
+                            <div class="questions">   
+                                <input type="text" value="<%= qns.question %>" name= "qn<%= 0%>" form="form-save">
+                            <% if( ( qns.answerType  === "checkbox") || ( qns.answerType  === "radio") ) { %>
+                                    <div class="option-answer" style="display: inline-block">
+                                        <p> <%= qns.answerType %> 1</p>
+                                        <input type="text" name="qn<%= 1 %>" value="<%= qns.options[0] %>" placeholder="option 1">
+                                    </div>
+                                    <br>
+                                    <div class="option-answer">
+                                        <p><%= qns.answerType %> 2</p>
+                                        <input type="text" name="qn<%= 2 %>" value="<%= qns.options[1] %>" placeholder="option 2">
+                                    </div>
+                                    <br>
+                                    <div class="option-answer">
+                                        <p><%= qns.answerType %> 3</p>
+                                        <input type="text" name="qn<%= 3 %>" value="<%= qns.options[2] %>" placeholder="option 3">
+                                    </div>
+                                    <br>
+                                    <div class="option-answer">
+                                        <p><%= qns.answerType %> 4</p>
+                                        <input type="text" name="qn<%= 4 %>" value="<%= qns.options[3] %>" placeholder="option 4">
+                                    </div>
+                                    <br>
+                            <% } %>
+                            <% if( ( qns.answerType  === "text")||(qns.answerType === "number")||( qns.answerType  === "file")||( qns.answerType  === "date")||( qns.answerType === "time") ) { %>
+                                <input type="<%= qns.answerType %>" form="form-save" placeholder="<%= qns.answerType %>" >
+                            <% } %>    
+                            <a href="/form/edit/<%= form._id %>/question/delete/<%= qns._id %>" style="bottom: 0; left: 10px;" on><i class="fa fa-trash" aria-hidden="true" style="size: 10px;color:red"></i></a>                                                            
+                            </div>
+                            <br>
+                        <% }); %>
+                            <input type="submit" form="form-save" value="Save Changes">
+                        </form>
+                    </div>
+                    <button class="open-button" onclick="openForm()" style="background-color: #008067;font-size: 20px">Create question</button>
+
+                    <div class="form-popup" id="myForm">
+                        <form class="form-container" action="/form/question/create/<%= form._id %>/" method="POST" id="create-question">
+                            <h1>Create Question</h1>
+                            <input type="text" placeholder="Enter Question" name="question" style="height: 10px;" required>
+                            <br>
+                            <div class="box">
+                                <select class="answer-type" name="answerType">
+                                    <option value="">Select type of answer</option>
+                                    <option value="text">Text</option>
+                                    <option value="number">Number</option>
+                                    <option value="checkbox">Checkbox</option>
+                                    <option value="radio">Radio button</option>
+                                    <option value="file">File Upload</option>
+                                    <option value="date">Date</option>
+                                    <option value="time">Time</option>
+                                </select>
+                            </div>
+                            <br>
+                            <button type="submit" class="save" onclick="closeForm()">Add Question</button>
+                        </form>
+                    </div>
+
+                    <div class="share-popup" id="shareForm">
+                        <div class="share-top">
+                            <h1>Share</h1>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Flocalhost%3A3000%2F&layout=button&size=large&width=73&height=28&appId" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                        </div>
+                        <label for="url"><b>Link</b></label>
+                        <input type="url" name="formUrl" value="/form/<%= form._id %>/fill/response" style="border: 2px solid black">
+                        <br>
+                        <button type="submit" class="save" onclick="closeShare()" style="background-color: red">Close</button>
+                    </div>
+                </main>
+            </div>
+    <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+        
+        function openShare() {
+            document.getElementById("shareForm").style.display = "block";
+        }
+
+        function closeShare() {
+            document.getElementById("shareForm").style.display = "none";
+        }
+
+        var pos;
+        function closeForm() {
+/*            var url = document.getElementById("create-question").action;
+            pos += 1;
+            url += pos;
+            document.getElementById("create-question").action = url;
+*/
+
+            document.getElementById("myForm").style.display = "none";
+        }
+
+
+
+        </script>
+    </body>
+</html>

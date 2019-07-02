@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+        <title>Form creator</title>
+        <style>
+            /* Simple dashboard grid CSS */
+            body {
+                font-family: 'Russo One', sans-serif;
+            }
+            /* Assign grid instructions to our parent grid container */
+            .grid-container {
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: 7% 1fr 7%;
+            grid-template-areas:
+                "header"
+                "main"
+                "footer";
+            height: 100vh;
+            }
+            .header, .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background-color: #008067;
+            }
+
+            /* Give every child element its grid name */
+            .header {
+            grid-area: header;
+            background-color: #008067;
+            }
+
+            .main {
+            grid-area: main;
+            background-color: white;
+            }
+
+            .footer {
+            grid-area: footer;
+            background-color: #008067;
+            }
+
+            .form-list{
+                margin: 7% 37%;
+                width: 40%;
+
+                padding: 1em;/*
+                border: 1px solid #CCC;
+                border-radius: 1em;*/
+                background: white;
+            }
+
+            .form-element{
+                width: 70%;
+                height: 10%;
+                display: flex;
+                justify-content: space-between;
+                padding: 1em;
+                border: 1px solid #CCC;
+                border-radius: 1em;
+                background: #008067;
+                
+            }
+
+            /* Button used to open the contact form - fixed at the bottom of the page */
+            .open-button {
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                opacity: 0.8;
+                position: absolute;
+                bottom: 7%;
+                right: 1.2%;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="grid-container">
+            <header class="header">
+                <div class="header__mainicon"><img src="https://img.icons8.com/ios/50/000000/google-forms-filled.png"></div>
+                <p> Welcome back, <%= user.username%> </p>
+                <div class="header__logout" ><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true" style="font-size: 50px; color: white"></i></a></div>
+            </header>
+            <main class="main">
+                <div class="form-list">
+                    <p style="margin: 3% 30%;">Your Forms</p>
+                    <% user.myForms.forEach(function(form){ %>
+                        <div class="form-element">
+                            <p> <%= form.title %></p>
+                            <div class="form-buttons">
+                                <a href="/form/delete/<%= form._id %>"><i class="fa fa-trash" aria-hidden="true" style="font-size: 30px;color: red;"></i></a>
+                                <a href="/form/edit/<%= form._id %>"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 28px;color: blue;"></i></a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                    <a href="/form/create/" class="open-button"><i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 50px;color: #008067"></i></a>
+            </main>
+            <footer class="footer"></footer>
+        </div>
+
+        <script>
+        </script>
+    </body>
+</html>
