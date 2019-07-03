@@ -196,7 +196,7 @@
             </header>
             <main class="main">
                 <div class="created-form">
-                    <form action="/form/<%= form._id %>/submit/response" method="POST" id="form-submit">    
+                    <form action="/form/<%= form._id %>/submit/response" method="POST" enctype="multipart/form-data" id="form-submit">    
                         <p><%= form.title %></p><br>
                         <% form.questions.forEach(function(qns) { %>
                         <div class="questions">   
@@ -216,7 +216,7 @@
                                 <br>
                         <% } %>
                         <% if( ( qns.answerType  === "text")||(qns.answerType === "number")||( qns.answerType  === "file")||( qns.answerType  === "date")||( qns.answerType === "time") ) { %>
-                            <input type="<%= qns.answerType %>" form="form-submit" name="an<%= qns.position %>" placeholder="<%= qns.answerType %>" >
+                            <input type="<%= qns.answerType %>" form="form-submit" name="an<%= qns.position %>" placeholder="<%= qns.answerType %>" required/>
                         <% } %>    
                         </div>
                     <% }); %>

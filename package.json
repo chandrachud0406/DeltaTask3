@@ -19,6 +19,7 @@
     "express-session": "^1.16.2",
     "mongoose": "^5.6.0",
     "mongoose-dynamic-schemas": "^1.2.6",
+    "multer": "^1.4.1",
     "nodemon": "^1.19.1"
   }
 }

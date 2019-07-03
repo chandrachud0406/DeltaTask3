@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var session = require('express-session');
 var connectFlash = require('connect-flash');
+var multer = require('multer');
 var fillingForm;
 
 //set up template engine
@@ -40,6 +41,20 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+//Multer for file uploads
+
+const storage = multer.diskStorage({
+    destination:'./public/uploads',
+    filename:function(req,file,cb){
+        cb(null,Date.now()+file.fieldname+file.originalname);
+    }
+});
+const upload = multer(
+{
+    storage:storage
+}); 
+
+//Flash messages
 app.use(connectFlash());
 
 //=====================================================
@@ -53,7 +68,18 @@ app.get('/', function(req, res){
 
 //Signup page
 app.get('/signup', function(req, res){
-    res.render('signup', {message: req.flash('info')});
+    var availUsernames = [];
+    User.find({}).exec().then(function(usernames){
+
+        for(var i = 0; i < usernames.length; i++) {
+            availUsernames.push(usernames[i].username);
+        }
+        res.render('signup', {message: req.flash('info'), users: availUsernames });
+        
+    }).catch(function(err){
+        console.log(err);
+    });
+
 });
 
 //Login page
